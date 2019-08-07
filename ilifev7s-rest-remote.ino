@@ -1,22 +1,29 @@
 #include <stdio.h>
 #include <ESP8266WebServer.h>
 #include <ArduinoJson.h>
+#include <IRremoteESP8266.h>
+#include <IRsend.h>
 
 #define HTTP_REST_PORT 80
 #define WIFI_RETRY_DELAY 500
 #define MAX_WIFI_INIT_RETRY 50
 
-const char* wifi_ssid = ""; // edit me
-const char* wifi_passwd = ""; // edit me
+// edit start
+const char* wifi_ssid = "";
+const char* wifi_passwd = "";
+const uint16_t ir_led = 4; // D2
+// edit end
 
 const char* previous_action = "";
 
 ESP8266WebServer http_rest_server(HTTP_REST_PORT);
+IRsend irsend(ir_led);
 
 int init_wifi() {
   int retries = 0;
+  Serial.println("");
   Serial.print("Connecting to WiFi AP");
-  
+
   WiFi.mode(WIFI_STA);
   WiFi.begin(wifi_ssid, wifi_passwd);
   // check the status of WiFi connection to be WL_CONNECTED
@@ -46,6 +53,28 @@ void manage_post() {
   String action = previous_action = json_doc["action"];
   Serial.print("Executing action ");
   Serial.println(action);
+
+  if(action == "clean" || action == "stop") {
+    irsend.sendNEC(0x02aa22dd);
+  } else if(action == "home") {
+    irsend.sendNEC(0x02aa2277);
+  } else if(action == "up") {
+    irsend.sendNEC(0x02aa55aa);
+  } else if(action == "down") {
+    irsend.sendNEC(0x02aa6699);
+  } else if(action == "left") {
+    irsend.sendNEC(0x02aa33cc);
+  } else if(action == "right") {
+    irsend.sendNEC(0x02aa44bb);
+  } else if(action == "spot") {
+    irsend.sendNEC(0x02aa7788);
+  } else if(action == "edge") {
+    irsend.sendNEC(0x02aa9966);
+  } else {
+      Serial.println("Action not found");
+      http_rest_server.send(400);
+  }
+
   http_rest_server.send(204);
 }
 
@@ -59,6 +88,7 @@ void config_rest_server_routing() {
 
 void setup(void) {
   Serial.begin(115200);
+  irsend.begin();
 
   if (init_wifi() == WL_CONNECTED) {
     Serial.print("Connected to ");
