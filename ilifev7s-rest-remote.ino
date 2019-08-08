@@ -73,6 +73,7 @@ void manage_post() {
   } else {
       Serial.println("Action not found");
       http_rest_server.send(400);
+      return;
   }
 
   http_rest_server.send(204);
