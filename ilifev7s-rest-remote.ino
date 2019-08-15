@@ -20,6 +20,14 @@ const char* previous_action = "";
 ESP8266WebServer http_rest_server(HTTP_REST_PORT);
 IRsend irsend(ir_led);
 
+uint16_t goHomeRawData[67] = {8762, 4542, 484, 628, 484, 626, 486, 602, 510, 602,
+                              456, 654, 486, 628, 484, 1720, 506, 602, 508, 1718,
+                              486, 628, 484, 1720, 506, 602, 506, 1716, 486, 628,
+                              484, 1718, 508, 600, 482, 1744, 484, 628, 484, 626,
+                              486, 604, 508, 1714, 482, 630, 484, 628, 484, 628,
+                              484, 602, 510, 1716, 482, 1742, 484, 1716, 510, 600,
+                              482, 1744, 484, 1740, 486, 1714, 508};  // UNKNOWN 5F9BBF19
+
 int init_wifi() {
   int retries = 0;
   Serial.println("");
@@ -62,7 +70,7 @@ void manage_post() {
     delay(DOUBLE_PRESS_BUTTON_DELAY);
     irsend.sendNEC(0x02aa22dd);
   } else if(action == "home") {
-    irsend.sendNEC(0x02aa2277);
+    irsend.sendRaw(goHomeRawData, 67, 38);
   } else if(action == "spot") {
     irsend.sendNEC(0x02aa7788);
   } else if(action == "edge") {
