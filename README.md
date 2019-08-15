@@ -15,7 +15,7 @@ Rest remote for Chuwi iLife v7s built on ESP8266<br><br>
 Debug endpoint just to see if it is working:
 - `http GET http://{ip}:80`<br><br>
 
-Execute an action (clean, stop, up, down, left, right, spot, home, edge):
+Execute an action (wake_up, clean, stop, up, down, left, right, spot, home, edge):
 - `http POST http://{ip}:80/ilifev7s action={action}`<br><br>
 
 See the previous executed action:

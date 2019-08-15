@@ -7,6 +7,7 @@
 #define HTTP_REST_PORT 80
 #define WIFI_RETRY_DELAY 500
 #define MAX_WIFI_INIT_RETRY 50
+#define DOUBLE_PRESS_BUTTON_DELAY 1000
 
 // edit start
 const char* wifi_ssid = "";
@@ -55,6 +56,10 @@ void manage_post() {
   Serial.println(action);
 
   if(action == "clean" || action == "stop") {
+    irsend.sendNEC(0x02aa22dd);
+  } else if(action == "wake_up") {
+    irsend.sendNEC(0x02aa22dd);
+    delay(DOUBLE_PRESS_BUTTON_DELAY);
     irsend.sendNEC(0x02aa22dd);
   } else if(action == "home") {
     irsend.sendNEC(0x02aa2277);
