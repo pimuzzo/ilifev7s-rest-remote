@@ -63,14 +63,6 @@ void manage_post() {
     irsend.sendNEC(0x02aa22dd);
   } else if(action == "home") {
     irsend.sendNEC(0x02aa2277);
-  } else if(action == "up") {
-    irsend.sendNEC(0x02aa55aa);
-  } else if(action == "down") {
-    irsend.sendNEC(0x02aa6699);
-  } else if(action == "left") {
-    irsend.sendNEC(0x02aa33cc);
-  } else if(action == "right") {
-    irsend.sendNEC(0x02aa44bb);
   } else if(action == "spot") {
     irsend.sendNEC(0x02aa7788);
   } else if(action == "edge") {
