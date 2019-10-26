@@ -71,8 +71,6 @@ void manage_post() {
     irsend.sendNEC(0x02aa22dd);
   } else if(action == "home") {
     irsend.sendRaw(goHomeRawData, 67, 38);
-    delay(DOUBLE_PRESS_BUTTON_DELAY);
-    irsend.sendRaw(goHomeRawData, 67, 38);
   } else if(action == "spot") {
     irsend.sendNEC(0x02aa7788);
   } else if(action == "edge") {
